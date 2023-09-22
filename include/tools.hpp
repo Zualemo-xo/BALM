@@ -52,7 +52,7 @@ namespace std
     }
   };
 }
-
+// Function overloading
 Eigen::Matrix3d Exp(const Eigen::Vector3d &ang)
 {
   double ang_norm = ang.norm();
@@ -88,7 +88,7 @@ Eigen::Matrix3d Exp(const Eigen::Vector3d &ang_vel, const double &dt)
   return I33;
   
 }
-
+//setting value for specific x,y coordinate - verify
 Eigen::Vector3d Log(const Eigen::Matrix3d &R)
 {
   double theta = (R.trace() > 3.0 - 1e-6) ? 0.0 : std::acos(0.5 * (R.trace() - 1));
@@ -105,6 +105,7 @@ Eigen::Matrix3d hat(const Eigen::Vector3d &v)
   return Omega;
 }
 
+// jr to be a function that computes a rotation matrix given a 3D vector vec
 Eigen::Matrix3d jr(Eigen::Vector3d vec)
 {
   double ang = vec.norm();
@@ -177,7 +178,7 @@ struct IMUST
     a.block<3, 1>(15, 0) = this->g - b.g;
     return a;
   }
-
+  // OPERATOR OVERLOADING WITH COPY CONST.
   IMUST &operator=(const IMUST &b)
   {
     this->R = b.R;
@@ -203,7 +204,7 @@ struct IMUST
 void down_sampling_voxel(pcl::PointCloud<PointType> &pl_feat, double voxel_size)
 {
   if(voxel_size < 0.001) return;
-
+  // set values for unordered  map
   unordered_map<VOXEL_LOC, PointType> feat_map;
   float loc_xyz[3];
   for(PointType &p_c : pl_feat.points)
@@ -215,7 +216,7 @@ void down_sampling_voxel(pcl::PointCloud<PointType> &pl_feat, double voxel_size)
         loc_xyz[j] -= 1.0;
     }
 
-    VOXEL_LOC position((int64_t)loc_xyz[0], (int64_t)loc_xyz[1], (int64_t)loc_xyz[2]);
+    VOXEL_LOC position((int64_t)loc_xyz[0], (int64_t)loc_xyz[1], (int64_t)loc_xyz[2]); // setting values for obj of a class - 3D plane.
     auto iter = feat_map.find(position);
     if(iter == feat_map.end())
     {
@@ -314,7 +315,7 @@ public:
     P += vec * vec.transpose();
     v += vec;
   }
-
+  //  covariance matrix 
   Eigen::Matrix3d cov()
   {
     Eigen::Vector3d center = v / N;
